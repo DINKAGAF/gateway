@@ -1,0 +1,50 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: debug-route
+          uri: http://localhost:8080
+          predicates:
+            - Path=/debug/**
+          filters:
+            - name: AuthenticationFilter
+app:
+  open-endpoints:
+    /auth/register,
+    /auth/login,
+    /auth/refresh
+
+jwt:
+  secret: ${JWT_SECRET_PHRASE}
+
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://localhost:8761/eureka/
+#    fetch-registry: true
+    #register-with-eureka: false
+
+
+#actuator
+management:
+  endpoints:
+    gateway:
+      enabled: true
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+
+
